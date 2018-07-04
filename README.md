@@ -4,7 +4,9 @@
 
 ## week 1
 * In class
-1.建立Github帳號
-2.建立README
+
+  1.建立Github帳號
+
+  2.建立README
 
 * At home
