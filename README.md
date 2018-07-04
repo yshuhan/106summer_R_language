@@ -7,6 +7,6 @@
 
   1.建立Github帳號
 
-  2.建立README
+  2.建立README.md
 
 * At home
