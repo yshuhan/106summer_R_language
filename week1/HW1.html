@@ -136,17 +136,38 @@ $(document).ready(function () {
 <h2>INTRO</h2>
 <div class="section level3">
 <h3>運算</h3>
-<p>四則運算</p>
-<pre class="r"><code>1 + 3</code></pre>
-<pre><code>## [1] 4</code></pre>
-<pre class="r"><code>9 - 7</code></pre>
+<p>加: +</p>
+<p>減: -</p>
+<p>乘: *</p>
+<p>除: /</p>
+<p>次方: ** 或 ^</p>
+<p>平方根: sqrt()</p>
+<pre class="r"><code>sqrt(4)</code></pre>
 <pre><code>## [1] 2</code></pre>
-<pre class="r"><code>3 * 2</code></pre>
-<pre><code>## [1] 6</code></pre>
-<pre class="r"><code>4 / 2</code></pre>
+<p>商數: %/%</p>
+<pre class="r"><code>11%/%5</code></pre>
 <pre><code>## [1] 2</code></pre>
-<pre class="r"><code>9 %% 5</code></pre>
-<pre><code>## [1] 4</code></pre>
+<p>餘數: %%</p>
+<pre class="r"><code>11%%5</code></pre>
+<pre><code>## [1] 1</code></pre>
+<p>判斷正負或0: sign()</p>
+<p>取絕對值: abs()</p>
+<p>取對數:</p>
+<ul>
+<li><p>log()</p>
+<p>以e為底數 log<sub>e</sub></p></li>
+<li><p>log1p()</p>
+<p>log(x) = log1p(x-1)</p></li>
+<li><p>log(x,y) 或是 log y(x)</p>
+<p>以y為底數 log<sub>y</sub>x</p></li>
+</ul>
+<p>exp:</p>
+<ul>
+<li><p>exp()</p>
+<p>能夠將輸入的數值,轉換為 e<sup>x</sup>的函數</p></li>
+<li><p>expm1()</p>
+<p>expm1(x) = exp(x) - 1</p></li>
+</ul>
 </div>
 <div class="section level3">
 <h3>變數</h3>
@@ -154,15 +175,358 @@ $(document).ready(function () {
 <div class="section level4">
 <h4>變數型態</h4>
 <p>變數有很多種類別，在不同程式語言也有不同分類。在R中分成</p>
-<p>*numeric</p>
-<p>*integer</p>
-<p>*logical</p>
-<p>*character</p>
+<p>*numeric:實數</p>
+<p>*integer:整數</p>
+<p>*logical:TRUE or FALSE</p>
+<p>*character:文字字串，用&quot; “包起來</p>
+<p>*complex:複數</p>
 <p>不同型別的變數型態之間的某些操作是不被允許的，例如:</p>
 <pre class="r"><code>1.5 + 3</code></pre>
 <pre><code>## [1] 4.5</code></pre>
 <p>1.5 +“three”</p>
 <p>第二個範例中，數字和character不能相加</p>
+</div>
+<div id="r--" class="section level4">
+<h4>R 在給予變數值時是利用「&lt;-」並不是程式語言中常見的「=」</h4>
+</div>
+<div id="na--null" class="section level4">
+<h4>NA 與 NULL</h4>
+<p>NA 代表是個空物件，已經有物件但是裡面沒東西，NULL 則是根本沒有任何東西</p>
+</div>
+</div>
+<div class="section level3">
+<h3>向量</h3>
+<p>利用 c(…) 建立向量，向量元素必須是同個資料屬性。</p>
+<pre class="r"><code>c(1,2,3)</code></pre>
+<pre><code>## [1] 1 2 3</code></pre>
+<p>當放入的形態不同時，會被轉成同一形態，且可以每個形態的強弱不同，以下是強到弱排序。</p>
+<p>character &gt; complex &gt; numeric &gt; integer &gt; logical</p>
+<div class="section level4">
+<h4>透過指標與名稱提取資料</h4>
+<ul>
+<li>指標</li>
+<li>元素名稱</li>
+</ul>
+<p>另外可以搭配 [] 或 [[]]，這樣分別會回傳向量元素的所有資訊或向量元素的數值，總共可以分成以下四種狀況。</p>
+<ul>
+<li>x[i]: 回傳向量元素所有資訊</li>
+<li>x[[i]]: 只回傳向量元素的值</li>
+<li>x[元素名稱]: 回傳向量元素所有資訊</li>
+<li>x[[元素名稱]] 只回傳向量元素的值</li>
+</ul>
+</div>
+<div id="c--xyseq--rep" class="section level4">
+<h4>c(…) 類似的函數 x:y、seq 與 rep</h4>
+<ul>
+<li>x:y：回傳 x 到 y 的整數向量，所以 x 與 y 都是整數。</li>
+<li>seq(s, e, by)：產生一個等差級數的向量。
+<ul>
+<li>s 是初始值</li>
+<li>e 是結束值</li>
+<li>by 是遞增值，預設是 1</li>
+</ul></li>
+<li>rep(x, times, each)：產生一個重覆循環的向量。
+<ul>
+<li>x 是需重覆循環的數值</li>
+<li>times 是重覆循環次數</li>
+<li>each 是 x 內元素重覆的次數</li>
+</ul></li>
+</ul>
+</div>
+<div class="section level4">
+<h4>基本相關函數</h4>
+<ul>
+<li>向量加減乘除</li>
+<li>length：計算向量中的元素個數。</li>
+<li>sum：將向量所有元素加總。</li>
+<li>prod：將向量所有元素相乘。</li>
+<li>cumsum：回傳元素累加向量。</li>
+<li>cumprod：回傳元素累乘向量。</li>
+<li>sort：將向量元素排列，產生排序過的向量。</li>
+<li>rank：回傳各向量元素的排序值。</li>
+</ul>
+</div>
+<div class="section level4">
+<h4>加減</h4>
+<p>如果長度較長的向量長度是較短的倍數的話是可以相加或相減的。</p>
+<pre class="r"><code> c(1, 2) + c(1, 2, 3, 4)</code></pre>
+<pre><code>## [1] 2 4 4 6</code></pre>
+</div>
+<div class="section level4">
+<h4>乘除</h4>
+<p>乘跟除的情況與加跟減狀況一致，只是當長度不是倍數時會有結果但也會警告。</p>
+<pre class="r"><code> c(1, 2) * c(1, 2, 3)</code></pre>
+<pre><code>## Warning in c(1, 2) * c(1, 2, 3): 較長的物件長度並非較短物件長度的倍數</code></pre>
+<pre><code>## [1] 1 4 3</code></pre>
+</div>
+</div>
+<div class="section level3">
+<h3>陣列</h3>
+<div id="-rbindcbind--array-" class="section level4">
+<h4>利用 rbind、cbind 與 array 函數建立陣列</h4>
+<p>陣列可視為多維度的向量變數，跟向量一樣，所有陣列元素的資料屬性必須一致。</p>
+<pre class="r"><code> x &lt;- c(1, 2, 3)
+ y &lt;- c(1, 2, 3)
+ 
+ rbind(x, y) # rbind 是利用 row(橫) 合併。</code></pre>
+<pre><code>##   [,1] [,2] [,3]
+## x    1    2    3
+## y    1    2    3</code></pre>
+<pre class="r"><code> cbind(x, y) # cbind 是利用 column(直) 合併。</code></pre>
+<pre><code>##      x y
+## [1,] 1 1
+## [2,] 2 2
+## [3,] 3 3</code></pre>
+<pre class="r"><code> array(x,c(1,3)) # c(1,3) 代表產生 1 x 3 陣列</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    2    3</code></pre>
+<pre class="r"><code> array(x,c(2,3)) # c(2,3) 代表產生 2 x 3 陣列</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    3    2
+## [2,]    2    1    3</code></pre>
+<pre class="r"><code> array(x,c(3,3)) # c(3,3) 代表產生 3 x 3 陣列</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    1    1
+## [2,]    2    2    2
+## [3,]    3    3    3</code></pre>
+</div>
+<div class="section level4">
+<h4>透過指標提取資料</h4>
+<p>陣列與向量相同，可以透過指標或名稱選取陣列的元素。</p>
+<pre class="r"><code> x &lt;- c(1, 2, 3)
+ y &lt;- c(4, 5, 6)
+
+ z = rbind(x, y)
+ z</code></pre>
+<pre><code>##   [,1] [,2] [,3]
+## x    1    2    3
+## y    4    5    6</code></pre>
+<pre class="r"><code> z[,1] # 選取第一行(column、直)</code></pre>
+<pre><code>## x y 
+## 1 4</code></pre>
+<pre class="r"><code> z[1,] # 選取第一列(row、橫)</code></pre>
+<pre><code>## [1] 1 2 3</code></pre>
+<pre class="r"><code> z[1,1:2] # 選取第一列第一到二行</code></pre>
+<pre><code>## [1] 1 2</code></pre>
+</div>
+<div id="-1" class="section level4">
+<h4>基本相關函數</h4>
+<ul>
+<li>陣列加減乘除</li>
+<li>length：計算陣列中的所有元素個數。</li>
+<li>dim：列出維度資訊</li>
+<li>ncol、nrow：計算(column、直) 或 (row、橫) 個數。</li>
+<li>aperm：將陣列轉置</li>
+</ul>
+<pre class="r"><code> x &lt;- c(1, 2, 3)
+ y &lt;- c(4, 5, 6)
+
+ z = rbind(x, y)
+ z</code></pre>
+<pre><code>##   [,1] [,2] [,3]
+## x    1    2    3
+## y    4    5    6</code></pre>
+<pre class="r"><code> z + z</code></pre>
+<pre><code>##   [,1] [,2] [,3]
+## x    2    4    6
+## y    8   10   12</code></pre>
+<pre class="r"><code> z - 2*z</code></pre>
+<pre><code>##   [,1] [,2] [,3]
+## x   -1   -2   -3
+## y   -4   -5   -6</code></pre>
+<pre class="r"><code> z * z # 相對應的陣列元素相乘</code></pre>
+<pre><code>##   [,1] [,2] [,3]
+## x    1    4    9
+## y   16   25   36</code></pre>
+<pre class="r"><code> z / z # 相對應的陣列元素相除</code></pre>
+<pre><code>##   [,1] [,2] [,3]
+## x    1    1    1
+## y    1    1    1</code></pre>
+<pre class="r"><code> length(z)</code></pre>
+<pre><code>## [1] 6</code></pre>
+<pre class="r"><code> dim(z) # 前者是 row，後者是 column。</code></pre>
+<pre><code>## [1] 2 3</code></pre>
+<pre class="r"><code> ncol(z)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code> nrow(z)</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code> aperm(z) # 等同是從 rbind 轉成 cbind</code></pre>
+<pre><code>##      x y
+## [1,] 1 4
+## [2,] 2 5
+## [3,] 3 6</code></pre>
+</div>
+</div>
+<div class="section level3">
+<h3>矩陣</h3>
+<div id="-matrix-" class="section level4">
+<h4>利用 matrix 建立矩陣</h4>
+<p>當陣列是 2 維的狀況就是所謂的矩陣，可以利用 matix 產生矩陣，也可以用之前產生陣列的方法實作。</p>
+<pre class="r"><code> matrix(c(1:4), nrow = 2, ncol = 2) # 預設是按照 column 填入資料</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    3
+## [2,]    2    4</code></pre>
+<pre class="r"><code> matrix(c(1:4), nrow = 2, ncol = 2, byrow = TRUE) # 可以更改成按照 row 填入資料</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    2
+## [2,]    3    4</code></pre>
+</div>
+<div id="-1" class="section level4">
+<h4>透過指標提取資料</h4>
+<p>矩陣跟陣列一樣，還是可以透過指標選取矩陣的部份元素。</p>
+<pre class="r"><code> x &lt;- c(1, 2, 3)
+ y &lt;- c(4, 5, 6)
+
+ z = rbind(x, y)
+ z</code></pre>
+<pre><code>##   [,1] [,2] [,3]
+## x    1    2    3
+## y    4    5    6</code></pre>
+<pre class="r"><code> z[,1] # 選取第一行(column、直)</code></pre>
+<pre><code>## x y 
+## 1 4</code></pre>
+<pre class="r"><code> z[1,] # 選取第一列(row、橫)</code></pre>
+<pre><code>## [1] 1 2 3</code></pre>
+<pre class="r"><code> z[1,1:2] # 選取第一列第一到二行</code></pre>
+<pre><code>## [1] 1 2</code></pre>
+</div>
+<div id="-2" class="section level4">
+<h4>基本相關函數</h4>
+<ul>
+<li>t(x)：將矩陣轉置。</li>
+<li>%*%：矩陣相乘。</li>
+<li>diag：產生一個對角矩陣，或回傳矩陣的對角線向量</li>
+<li>det：計算矩陣行列式值，一定是要對稱矩陣。</li>
+<li>solve：傳回矩陣的反矩陣，非常適合解線性方程式。</li>
+<li>eigen：計算矩陣的特徵向量與特徵值。</li>
+<li>rownames：修改或查詢 row 名稱。</li>
+<li>colnames：修改或查詢 column 名稱。</li>
+</ul>
+</div>
+</div>
+<div class="section level3">
+<h3>因子</h3>
+<div id="-factor-" class="section level4">
+<h4>利用 factor 建立因子</h4>
+<p>因子有點像經過分級之後的向量，因子大多可以用在統計上的迴歸分析與實際設計等。</p>
+<pre class="r"><code> x &lt;- c(1, 2, 4, 3, 1, 2, 3, 4,1)
+ factor(x)</code></pre>
+<pre><code>## [1] 1 2 4 3 1 2 3 4 1
+## Levels: 1 2 3 4</code></pre>
+<pre class="r"><code> factor(x, labels = c(&quot;一&quot;, &quot;二&quot;, &quot;三&quot;, &quot;四&quot;)) # 可自訂 Level 的名稱。</code></pre>
+<pre><code>## [1] 一 二 四 三 一 二 三 四 一
+## Levels: 一 二 三 四</code></pre>
+<pre class="r"><code> factor(x, ordered = TRUE) # ordered 代表可做排序</code></pre>
+<pre><code>## [1] 1 2 4 3 1 2 3 4 1
+## Levels: 1 &lt; 2 &lt; 3 &lt; 4</code></pre>
+<pre class="r"><code> factor(c(1, 2, 1, NA, 2), exclude = NA) # 可利用 exclude 排除特定資料。</code></pre>
+<pre><code>## [1] 1    2    1    &lt;NA&gt; 2   
+## Levels: 1 2</code></pre>
+<pre class="r"><code> factor(c(1, 2, 1, NA, 2), exclude = 2)</code></pre>
+<pre><code>## [1] 1    &lt;NA&gt; 1    &lt;NA&gt; &lt;NA&gt;
+## Levels: 1 &lt;NA&gt;</code></pre>
+<pre class="r"><code> factor(c(1, 2, 1, NA, 2), exclude = NULL) # 不排除任何資料。</code></pre>
+<pre><code>## [1] 1    2    1    &lt;NA&gt; 2   
+## Levels: 1 2 &lt;NA&gt;</code></pre>
+</div>
+<div id="-2" class="section level4">
+<h4>透過指標提取資料</h4>
+<pre class="r"><code> x[1] # [] 與 [[]] 結果一致，因為因子只有值沒有其他相關資料。</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code> x[[1]]</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code> x[1:2] # 指標可以使用向量。</code></pre>
+<pre><code>## [1] 1 2</code></pre>
+<pre class="r"><code> x[c(1, 3, 5)]</code></pre>
+<pre><code>## [1] 1 4 1</code></pre>
+</div>
+<div id="-3" class="section level4">
+<h4>基本相關函數</h4>
+<ul>
+<li>is.factor：判斷是否為因子。</li>
+<li>as.factor：將變數轉為因子。</li>
+<li>is.ordered：判斷是否為排序過的因子。</li>
+<li>as.ordered：將因子排序。</li>
+<li>which：找出符合條件的指標。</li>
+</ul>
+<pre class="r"><code> x &lt;- c(1, 2, 4, 3, 1, 2, 3, 4,1)
+
+ as.factor(x)</code></pre>
+<pre><code>## [1] 1 2 4 3 1 2 3 4 1
+## Levels: 1 2 3 4</code></pre>
+<pre class="r"><code> is.factor(x)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code> is.factor(as.factor(x))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code> is.ordered(factor(x, ordered = TRUE))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code> is.ordered(factor(x, ordered = FALSE))</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code> as.ordered(factor(x))</code></pre>
+<pre><code>## [1] 1 2 4 3 1 2 3 4 1
+## Levels: 1 &lt; 2 &lt; 3 &lt; 4</code></pre>
+<pre class="r"><code> which(x == 1) # 找出 x 等於 1 的指標</code></pre>
+<pre><code>## [1] 1 5 9</code></pre>
+</div>
+</div>
+<div class="section level3">
+<h3>列表</h3>
+<div id="-list-" class="section level4">
+<h4>利用 list 建立列表</h4>
+<p>列表跟向量很相似，但最大的不同在於列表可以包含不同資料屬性的資料。</p>
+<pre class="r"><code> x &lt;- list(a = 1, b = TRUE, c = &quot;test&quot;, d = c(1, 2, 3))
+ x</code></pre>
+<pre><code>## $a
+## [1] 1
+## 
+## $b
+## [1] TRUE
+## 
+## $c
+## [1] &quot;test&quot;
+## 
+## $d
+## [1] 1 2 3</code></pre>
+</div>
+<div id="-1" class="section level4">
+<h4>透過指標與名稱提取資料</h4>
+<pre class="r"><code> x &lt;- list(a = 1, b = TRUE, c = &quot;test&quot;, d = c(1, 2, 3))
+
+ x[1]</code></pre>
+<pre><code>## $a
+## [1] 1</code></pre>
+<pre class="r"><code> x[[1]]</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code> x$b # 是利用 % 加上名稱提取資料</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code> x[[4]][1] # x[[4]] 取出第四個值，因為第四個值是向量，所以可以在取一次指標，取出向量的元素值。</code></pre>
+<pre><code>## [1] 1</code></pre>
+</div>
+<div id="-4" class="section level4">
+<h4>基本相關函數</h4>
+<ul>
+<li>as.list：建立列表</li>
+<li>is.list：判斷是否為列表</li>
+<li>attributes：查看所有元素的名稱，names 也有相同功能。</li>
+</ul>
+<pre class="r"><code> x &lt;- list(a = 1, b = TRUE, c = &quot;test&quot;, d = c(1, 2, 3))
+
+ as.list(c(1,2,3))</code></pre>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 2
+## 
+## [[3]]
+## [1] 3</code></pre>
+<pre class="r"><code> is.list(x)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code> attributes(x)</code></pre>
+<pre><code>## $names
+## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot;</code></pre>
+<pre class="r"><code> names(x)</code></pre>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot;</code></pre>
 </div>
 </div>
 </div>
