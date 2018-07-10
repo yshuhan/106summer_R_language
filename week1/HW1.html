@@ -529,6 +529,33 @@ $(document).ready(function () {
 <pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot;</code></pre>
 </div>
 </div>
+<div class="section level3">
+<h3>資料框架</h3>
+<div id="-data.frame-" class="section level4">
+<h4>利用 data.frame 建立資料框架</h4>
+<p>資料框架類似資料表，常當作大量資料集，例如：匯入外部檔或讀取資料庫資料等。</p>
+<pre class="r"><code> name &lt;- c(&quot;Joe&quot;, &quot;Bob&quot;, &quot;Vicky&quot;)
+ age &lt;- c(&quot;28&quot;, &quot;26&quot;, &quot;34&quot;)
+ gender &lt;- c(&quot;Male&quot;,&quot;Male&quot;,&quot;Female&quot;)
+ data &lt;- data.frame(name, age, gender)
+ View(data) # 自動點選 data 變數就會開啟資料的畫面。</code></pre>
+</div>
+<div id="-2" class="section level4">
+<h4>透過指標與名稱提取資料</h4>
+<p>資料框架的提取資料方法跟矩陣或陣列的都很類似。</p>
+</div>
+<div id="-5" class="section level4">
+<h4>基本相關函數</h4>
+<ul>
+<li>head：取得資料框架前六比資料(預設是 6)。</li>
+<li>names：修改或查詢 column 名稱。</li>
+<li>colnames：設定 column 名稱。</li>
+<li>row.names：修改或查詢 row 名稱。</li>
+<li>rownames：設定 row 的名稱</li>
+<li>summary：顯示資料基本資訊。</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 
