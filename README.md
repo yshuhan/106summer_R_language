@@ -27,6 +27,6 @@
   2.
   
   
-  ### 作業
-  [HW2-1](https://yshuhan.github.io/project/week2/HW2-1.html)
+### 作業
+[HW2-1](https://yshuhan.github.io/project/week2/HW2-1.html)
   
