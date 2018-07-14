@@ -14,3 +14,19 @@
 
 ### 作業
 [HW1](https://yshuhan.github.io/project/week1/HW1.html)
+
+
+## week2
+* In class
+
+  1.
+  2.
+* At home
+  
+  1.
+  2.
+  
+  
+  ### 作業
+  [HW2-1](https://yshuhan.github.io/project/week2/HW2-1.html)
+  
