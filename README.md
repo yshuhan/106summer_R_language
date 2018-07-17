@@ -29,4 +29,4 @@
   
 ### 作業
 [HW2-1](https://yshuhan.github.io/project/week2/HW2-1.html)
-  
+[HW2-2](https://yshuhan.github.io/project/week2/HW2-2.html) 
