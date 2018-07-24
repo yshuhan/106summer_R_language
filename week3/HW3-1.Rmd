@@ -66,11 +66,13 @@ courtplot <- function(feat) {
 }
 ```
 
+### 不同投籃方式在球場上的分布
+
 ```{r}
 courtplot(combined_shot_type)
 ```
 
-
+### 上圖難以辨識故將其中一項作淡化處理
 
 ```{r}
 # 使用filter查找出特定條件為true的情況，這裡把"Jump Shot"找出來設為較不顯眼的顏色，重新畫圖
@@ -88,6 +90,8 @@ ggplot() +
     ggtitle("Shot Types")
 ```
 
+### 放大檢視排除特定項目後，與籃框相距小於等於5時的投籃命中情形。1代表進，0代表沒進。
+
 ```{r}
 ggplot() +
         geom_point(data = filter(train, combined_shot_type != "Jump Shot",
@@ -100,6 +104,8 @@ ggplot() +
     theme_void() +
     ggtitle("Shots from up close")
 ```
+
+
 
 ```{r}
 # facet_grid():根據shot_made_flag分成兩個圖
