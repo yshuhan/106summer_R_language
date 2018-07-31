@@ -55,3 +55,12 @@
 ### 作業
 [HW3-1](https://yshuhan.github.io/project/week3/HW3-1.html)
 
+[HW3-2](https://yshuhan.github.io/project/week3/HW3-2.html)
+
+## week4
+* In class
+
+
+* At home
+
+## 作業
