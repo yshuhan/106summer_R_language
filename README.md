@@ -59,8 +59,21 @@
 
 ## week4
 * In class
+  Statistic, Correlation, Regression, T-test, ANOVA
 
+* At home
+  
+## 作業
+[HW4-1](https://yshuhan.github.io/project/week4/HW4-1.html)
+
+
+## week5
+* In class
+  
+  1.講座
+  
+  2.shiny
 
 * At home
 
-## 作業
+  1.進行第6周的project
