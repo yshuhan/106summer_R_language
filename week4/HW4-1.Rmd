@@ -1,0 +1,309 @@
+---
+title: "HW4-1"
+author: "yshuhan"
+date: "2018年8月5日"
+output: html_document
+---
+### 載入套件
+
+```{r,warning=FALSE,message=FALSE}
+library(ggplot2)
+library(Hmisc)
+library(coefplot)
+library(lattice)
+library(MASS)
+library(heplots)
+library(car)
+library(corrplot)
+library(effects)
+library(lm.beta)
+```
+
+
+
+
+### 讀入來自TIMSS 的 2011 年台灣資料
+
+```{r}
+dta <- read.table(file = "TIMSS2011TW.txt", 
+                  header = TRUE)
+```
+
+### 瀏覽資料
+
+```{r}
+str(dta)
+```
+
+```{r}
+summary(dta)
+```
+
+
+## 分數對性別
+### 畫圖
+
+
+```{r}
+ggplot(data = dta, aes(x = gender, y = math)) +
+ geom_boxplot() + coord_flip() +
+ labs( y = 'math', x = 'gender', 
+       title = "數學分數對性別盒狀圖")
+```
+
+### 計算95%信賴區間
+
+```{r}
+with(dta, 
+     tapply(math, gender,
+     function(x) 
+       c(mean(x) + c(-2, 2) * sd(x)/sqrt(length(x)))))
+```
+
+### T檢定
+
+```{r}
+t.test(math ~ gender, data = dta)
+```
+
+## 分數對父母教育及教育資源
+
+```{r}
+dta$parental.education <- factor(dta$parental.education, 
+                       levels = c('elementary school',
+                                  'junior high school',
+                                  'high school',
+                                  'college', 
+                                  'university above'))
+
+tapply(dta$math, dta$parental.education, mean)
+```
+
+```{r}
+ggplot(data = dta, 
+       aes(x = parental.education, y = math)) +
+  stat_summary(fun.data = 'mean_cl_boot', size = 1) +
+  scale_y_continuous(breaks = seq(500, 660, by = 20)) +
+  geom_hline(yintercept = mean(dta$math) , 
+             linetype = 'dotted') +
+  labs(x = '父母教育', y = '數學平均分數') +
+  coord_flip()
+```
+
+```{r}
+anova(m1 <- lm(math ~ parental.education, data = dta))
+```
+
+```{r}
+ggplot(data = dta, 
+       aes(group = parental.education, 
+          y = math, x = educational.resources)) +
+  geom_point() +
+  stat_smooth(method = 'lm', se = F) +
+  stat_smooth(aes(group = parental.education, 
+          y = math, x = educational.resources), 
+          method = 'lm', se = F) + 
+  facet_grid( . ~  parental.education) +
+  labs(x = '教育資源', y = '數學分數')
+```
+
+父母教育與教育資源有正相關
+
+
+```{r}
+anova(m2 <- update(m1, . ~ . + 
+            educational.resources, data = dta))
+```
+
+```{r}
+anova(m3 <- update(m2, . ~ . - parental.education,  data = dta))
+```
+
+```{r}
+#將結果放在一個list中
+res_lm <- lapply(list(m1, m2, m3), summary)
+#比較在控制教育資源下，父母教育的效果
+(res_lm[[2]]$r.sq - res_lm[[3]]$r.sq)/res_lm[[2]]$r.sq
+```
+
+```{r}
+anova(m3, m2)
+```
+
+```{r}
+#比較在控制父母教育下，教育資源的效果
+(res_lm[[2]]$r.sq - res_lm[[1]]$r.sq)/res_lm[[1]]$r.sq
+```
+
+```{r}
+anova(m1, m2)
+```
+
+### 畫圖
+
+```{r}
+m2 <- lm(math ~ parental.education+educational.resources- 1, 
+         data = dta)
+coefplot(m2, xlab = '估計值', ylab = '迴歸變項', title = '應變項 = 數學分數')
+```
+
+### 把資料與迴歸分析的預測值、殘差與影響度放進資料
+
+```{r}
+fit_m2 <- data.frame(dta[, c(2, 12, 13)], fitted = fitted(m2), resid = resid(m2),
+                     infl = influence(m2)$hat )
+```
+
+### 依父母教育疊合真實觀測值與預測值
+
+```{r}
+ggplot(data = fit_m2, aes(x = math, group = parental.education )) +
+ stat_density(geom = 'path', position = 'identity') +
+ stat_density(geom = 'path', position = 'identity', aes(x = fitted)) +
+ geom_vline(xintercept = c(with(dta, tapply(math,parental.education, mean))), linetype = 'dotted')+
+ facet_grid(parental.education ~ .) +
+ scale_x_continuous(breaks = seq(200, 900, by = 100))+
+ labs(x = '數學分數', y = '機率密度')
+```
+
+### 殘差分配，依父母教育，檢視常態與變異數同質假設
+
+```{r}
+ggplot(data = fit_m2, aes(x = scale(resid)), group = parental.education ) +
+ stat_density(geom = 'path', position = 'identity', aes(linetype = parental.education)) +
+ scale_linetype_manual(values = 5:1) +
+ guides(linetype = guide_legend(reverse = TRUE)) +
+ labs(x = '標準化殘差', y = '機率密度') +
+ theme(legend.position = c(.15, .8))
+```
+
+### 殘差的 Q-Q 圖，依父母教育。檢視常態假設
+
+```{r}
+qqmath(~ scale(resid) | parental.education, data = fit_m2, type = c('p', 'g', 'r'),
+       xlab = '常態位數', ylab = '標準化殘差', layout = c(2, 3),
+       pch = '.', cex = 2)
+```
+
+### 畫預測值與殘差的散佈圖，檢查線性與等分散假設
+
+```{r}
+ggplot(data = fit_m2, aes(x = fitted, y = scale(resid), group = parental.education )) +
+  geom_point(pch = 20, size = 1) +
+  stat_smooth(method = 'rlm', se = F) +
+  facet_grid(parental.education ~ .) +
+  labs(x = '數學預測值', y = '標準化殘差')
+
+```
+
+### 呈現影響值（影響估計結果過大的值）與標準化殘差
+
+```{r}
+ggplot(data = fit_m2, aes(x = infl, y = scale(resid), group = parental.education)) +
+ geom_text(aes(label = rownames(fit_m2)), cex = 2) +
+ geom_hline(yintercept = 0, linetype = 'dotted') +
+ facet_grid(parental.education ~ .) +
+ labs(x = '影響值', y = '標準化殘差')
+
+```
+
+
+### 影響值
+
+```{r}
+summary(influence(m2)$hat)
+```
+
+## 資料集當中的其他變項對數學成績
+
+```{r}
+dta_math <- dta[, c('math', 'math.interest', 
+                    'math.evaluation', 'math.input')]
+
+```
+```{r}
+colMeans(dta_math)
+```
+
+### 兩兩散佈圖
+
+```{r,warning=FALSE}
+scatterplotMatrix(~ math + math.interest + math.evaluation + math.input, data= dta_math,
+  pch = '.', cex = 3, smooth = FALSE, reg.line = FALSE, ellipse = TRUE,
+  diagonal = 'none', lower.panel = NULL)
+```
+
+### 以圖形顯示相關性的大小
+
+```{r}
+corrplot(cor(dta_math), method = 'ellipse', order = 'hclust', addrect = 4,
+         type = 'upper', tl.pos = 'tp')
+corrplot(cor(dta_math), add = TRUE, type = 'lower', method = 'number',
+         order = 'hclust', col = 'black', diag = FALSE, tl.pos = 'n', cl.pos = 'n')
+
+```
+
+### 放進三個解釋變項
+
+```{r}
+summary(m4 <- lm(math ~ math.interest + math.evaluation + math.input, data = dta_math))
+```
+
+```{r}
+coefplot(m4, predictors = c('math.interest', 'math.evaluation', 
+                            'math.input'),
+ xlab = '估計值', ylab = '迴歸變項(去除截距)', title = '應變項=數學分數')
+```
+
+```{r}
+plot(allEffects(m4), main = '', ylim = c(550, 670), grid = T)
+```
+
+### 計算標準化迴歸係數
+
+```{r}
+summary(lm.beta(m4))
+```
+
+### 控制數學興趣與數學評價後，數學投入的效果
+
+```{r}
+summary(m5 <- update(m4, . ~ . - math.input , data = dta_math))
+```
+
+```{r}
+anova(m5, m4)
+```
+
+### math ~ math.interest + math.hours + math.evaluation + educational.resources
+### dta[,2] ~ dta[,3] + dta[,6] + dta[,4] + dta[,13]
+
+```{r}
+m5 <- lm(math ~ math.interest + math.hours + math.evaluation + educational.resources, data = dta)
+fit_m5 <- data.frame(dta[, c(2, 3, 6, 4, 13)], fitted = fitted(m5), resid = resid(m5), infl = influence(m5)$hat)
+
+ggplot(data = fit_m5, aes(x = math, group = math.hours )) +
+ stat_density(geom = 'path', position = 'identity') +
+ stat_density(geom = 'path', position = 'identity', aes(x = fitted)) +
+ geom_vline(xintercept = c(with(dta, tapply(math, math.hours, mean))), linetype = 'dotted')+
+ facet_grid(math.hours ~ .) +
+ scale_x_continuous(breaks = seq(200, 900, by = 100))+
+ labs(x = '數學分數', y = '機率密度')
+```
+
+
+## 自己改模型玩玩看
+
+```{r}
+m6 <- lm(math ~ math.interest + math.hours + educational.resources + gender, data = dta)
+fit_m6 <- data.frame(dta[, c(2, 3, 6, 13,1)], fitted = fitted(m6), resid = resid(m6), infl = influence(m6)$hat)
+
+ggplot(data = fit_m6, aes(x = math, group = gender )) +
+ stat_density(geom = 'path', position = 'identity') +
+ stat_density(geom = 'path', position = 'identity', aes(x = fitted)) +
+ geom_vline(xintercept = c(with(dta, tapply(math, gender, mean))), linetype = 'dotted')+
+ facet_grid(gender ~ .) +
+ scale_x_continuous(breaks = seq(200, 900, by = 100))+
+ labs(x = '數學分數', y = '機率密度')
+```
+
