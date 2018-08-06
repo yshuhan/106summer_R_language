@@ -59,7 +59,8 @@
 
 ## week4
 * In class
-  Statistic, Correlation, Regression, T-test, ANOVA
+  
+  1.Statistic, Correlation, Regression, T-test, ANOVA
 
 * At home
   
