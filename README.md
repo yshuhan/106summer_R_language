@@ -81,3 +81,5 @@
 ## week6
 
 [PPT](https://docs.google.com/presentation/d/1f3kFYw02GqWO3Hvw_UdC8aNaPKEfN5g6jrdFDvZMe7U/edit?usp=sharing)
+
+[Shiny](https://stephanie123.shinyapps.io/afternoonpro/)
