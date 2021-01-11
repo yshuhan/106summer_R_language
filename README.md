@@ -30,9 +30,9 @@
   
   
 ### 作業
-[HW2-1](https://yshuhan.github.io/project/week2/HW2-1.html)
+[HW2-1](https://yshuhan.github.io/106summer_R_language/week2/HW2-1.html)
 
-[HW2-2](https://yshuhan.github.io/project/week2/HW2-2.html) 
+[HW2-2](https://yshuhan.github.io/106summer_R_language/week2/HW2-2.html) 
 
 
 ## week3
@@ -53,9 +53,9 @@
  
 
 ### 作業
-[HW3-1](https://yshuhan.github.io/project/week3/HW3-1.html)
+[HW3-1](https://yshuhan.github.io/106summer_R_language/week/HW3-1.html)
 
-[HW3-2](https://yshuhan.github.io/project/week3/HW3-2.html)
+[HW3-2](https://yshuhan.github.io/106summer_R_language/week3/HW3-2.html)
 
 ## week4
 * In class
@@ -65,7 +65,7 @@
 * At home
   
 ### 作業
-[HW4-1](https://yshuhan.github.io/project/week4/HW4-1.html)
+[HW4-1](https://yshuhan.github.io/106summer_R_language/week4/HW4.html)
 
 
 ## week5
