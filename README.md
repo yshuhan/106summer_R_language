@@ -13,7 +13,7 @@
 
 
 ### 作業
-[HW1](https://yshuhan.github.io/project/week1/HW1.html)
+[HW1](https://yshuhan.github.io/106summer_R_language/week1/HW1.html)
 
 
 ## week2
